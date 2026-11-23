@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<script>
+  (function() {
+    var GA_ID = 'G-XNX37Q44PC';
+    var isLocalDev = ['localhost', '127.0.0.1', ''].includes(location.hostname);
+    if (isLocalDev) return;
+    try { if (/[?&]no_ga=0/.test(location.search)) localStorage.removeItem('no_ga'); if (/[?&]no_ga=1/.test(location.search)) localStorage.setItem('no_ga', '1'); if (localStorage.getItem('no_ga') === '1') return; } catch (e) {}
+    var gaQ = new URLSearchParams(location.search); if (gaQ.get('obs') === '1' || gaQ.get('no_ga') === '1') return;
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', GA_ID);
+    document.addEventListener('click', function(e) {
+      var a = e.target && e.target.closest ? e.target.closest('a[href*="booth.pm"]:not([href*="/search"])') : null;
+      if (!a) return;
+      gtag('event', 'booth_click', { link_url: a.href, link_id: a.id || '', link_text: (a.textContent || '').trim().slice(0, 40) });
+    });
+  })();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="ブックカバーを無料で作成・印刷(登録不要)。文庫・新書・コミック・単行本の大きさと背幅を入れるだけで、ぴったりの紙のブックカバーのテンプレートができます。柄・色・タイトルを選んでA4・B4・A3に印刷。折る位置の印つき。">
+<link rel="canonical" href="https://uuhai0625.github.io/book-cover-maker/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:title" content="ブックカバーメーカー|文庫・新書のブックカバーを無料で作成・A4で印刷(テンプレート)">
+<meta property="og:description" content="ブックカバーを無料で作成・印刷(登録不要)。文庫・新書・コミック・単行本の大きさと背幅を入れるだけで、ぴったりの紙のブックカバーのテンプレートができます。柄・色・タイトルを選んでA4・B4・A3に印刷。折る位置の印つき。">
+<meta property="og:url" content="https://uuhai0625.github.io/book-cover-maker/">
+<meta property="og:image" content="https://uuhai0625.github.io/book-cover-maker/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<title>ブックカバーメーカー|文庫・新書のブックカバーを無料で作成・A4で印刷(テンプレート)</title>
+<style>
+  :root {
+    --bg: #f3f5f8;
+    --panel: #ffffff;
+    --border: #d9e0ea;
+    --field-border: #66748a;
+    --text: #1e2735;
+    --muted: #4f5b6d;
+    --accent: #2f4f7f;
+    --accent-dark: #1f3557;
+    --ng: #b3261e;
+    --locked: #b8c4d6;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  header { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; padding: 24px 20px 18px; text-align: center; }
+  header h1 { margin: 0 0 6px; font-size: 1.35rem; }
+  header p { margin: 0; font-size: .9rem; }
+  main { max-width: 1040px; margin: 0 auto; padding: 22px 16px 50px; }
+  main > * { min-width: 0; }
+  .layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 18px; align-items: start; }
+  .layout > div { min-width: 0; }
+  .layout > .col-pv { position: sticky; top: 12px; max-height: calc(100vh - 24px); overflow-y: auto; }
+  section.card { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; margin-bottom: 18px; }
+  section.card h2 { margin: 0 0 6px; font-size: 1.05rem; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .desc { color: var(--muted); font-size: .84rem; margin: 0 0 12px; }
+  .fine { color: var(--muted); font-size: .8rem; margin: 8px 0 0; }
+  .badge { display: inline-block; font-size: .7rem; padding: 2px 8px; border-radius: 999px; background: #fff1cc; color: #7a5600; font-weight: bold; }
+  .hidden { display: none !important; }
+  label.field { display: block; margin-bottom: 12px; }
+  .lbl { font-size: .85rem; font-weight: bold; display: block; }
+  .hint { font-size: .78rem; color: var(--muted); font-weight: normal; display: block; margin-top: 2px; }
+  input[type=text], input[type=number], select { width: 100%; margin-top: 5px; padding: 8px 10px; min-height: 44px; border: 1px solid var(--field-border); border-radius: 8px; font-size: 1rem; font-family: inherit; background: #fff; color: var(--text); }
+  input[type=file] { margin-top: 5px; min-height: 44px; font-size: .9rem; max-width: 100%; }
+  .row2 { display: flex; gap: 12px; }
+  .row2 > * { flex: 1; min-width: 0; }
+  label.check { display: flex; align-items: center; gap: 8px; min-height: 44px; font-size: .86rem; cursor: pointer; }
+  label.check input { width: 20px; height: 20px; margin: 0; flex-shrink: 0; }
+  .btn-row { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+  .btn { min-height: 44px; padding: 9px 16px; border-radius: 8px; font-size: .88rem; cursor: pointer; border: 1px solid var(--field-border); background: #fff; color: var(--text); font-family: inherit; }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: bold; }
+  .btn:disabled { opacity: .5; cursor: not-allowed; }
+  .btn:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible { outline: 2px solid var(--accent-dark); outline-offset: 2px; }
+  .btn-row .btn { flex: 1; }
+  .status { font-size: .82rem; color: var(--muted); margin-top: 6px; min-height: 1.2em; }
+  .status.err, .err { color: var(--ng); font-weight: bold; }
+  .preview { border: 1px solid var(--border); border-radius: 8px; background: #e4e8ee; padding: 12px; display: flex; flex-direction: column; align-items: center; gap: 10px; overflow: hidden; }
+  .preview .sheet { background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,.14); position: relative; overflow: hidden; }
+  .preview .sheet-cap { font-size: .78rem; color: var(--muted); margin-top: -4px; }
+  .info { font-size: .84rem; margin-top: 8px; }
+  .warn { font-size: .84rem; margin-top: 8px; padding: 8px 10px; border-radius: 8px; background: #fff4e0; border: 1px solid #e6b45c; color: #5c3b00; }
+  .warn:empty { display: none; }
+  .warn.err { background: #fdecea; border-color: #e3a29d; color: var(--ng); }
+  .legend { font-size: .78rem; color: var(--muted); margin: 6px 0 0; }
+  .jump { display: none; font-size: .86rem; color: var(--accent-dark); }
+  .guide { font-size: .86rem; }
+  .guide ul, .guide ol { padding-left: 1.3em; margin: 6px 0; }
+  .guide li { margin: 4px 0; }
+  .guide table { border-collapse: collapse; font-size: .84rem; margin: 6px 0; }
+  .guide th, .guide td { border: 1px solid var(--border); padding: 4px 8px; text-align: left; }
+  .locked-panel { border: 1px dashed var(--locked); border-radius: 10px; padding: 16px; text-align: center; color: var(--muted); background: #f8fafd; }
+  .locked-panel .lead { color: var(--text); font-weight: bold; }
+  .locked-panel .feat-list { text-align: left; max-width: 600px; margin: 10px auto; font-size: .85rem; padding-left: 1.2em; }
+  .buy-btn { display: inline-block; margin-top: 8px; background: var(--accent-dark); color: #fff; font-weight: bold; padding: 11px 22px; border-radius: 999px; text-decoration: none; font-size: .9rem; }
+
+  /* ===== ブックカバー(印刷と見本で共通。大きさはmm) ===== */
+  .page { position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #fff; }
+  .bcw { position: relative; flex-shrink: 0; }
+  .bc { position: absolute; left: 0; top: 0; overflow: hidden; outline: 0.2mm solid #888; font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", serif; }
+  .bc .pat { position: absolute; inset: 0; }
+  .bc img { position: absolute; object-fit: cover; display: block; }
+  .bc .ft, .bc .sp { position: absolute; display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; }
+  .bc .ft { flex-direction: column; gap: .4em; }
+  .bc .ft.tate { writing-mode: vertical-rl; flex-direction: column; }
+  .bc .sp { writing-mode: vertical-rl; gap: 1em; white-space: nowrap; }
+  .bc .tt { font-weight: bold; line-height: 1.3; }
+  .bc .au { line-height: 1.3; }
+  .bc .fl { position: absolute; border: 0 dashed rgba(0,0,0,.35); }
+  .tick { position: absolute; background: #555; }
+  .seam-cut { position: absolute; top: 0; bottom: 0; border-left: 0.5mm solid #222; }
+  .glue { position: absolute; top: 0; bottom: 0; background: repeating-linear-gradient(45deg, rgba(0,0,0,.18) 0 1mm, rgba(255,255,255,.5) 1mm 3mm); display: flex; align-items: center; justify-content: center; }
+  .glue span { writing-mode: vertical-rl; font-size: 3mm; background: #fff; padding: 1mm .5mm; color: #333; font-family: sans-serif; }
+  .vp { position: relative; overflow: hidden; flex-shrink: 0; }
+
+  #printArea .page { break-after: page; page-break-after: always; }
+  #printArea .page:last-child { break-after: auto; page-break-after: auto; }
+  footer { max-width: 1040px; margin: 0 auto; padding: 0 16px 40px; font-size: .8rem; color: var(--muted); }
+  footer a { color: var(--muted); display: inline-block; padding: 10px 0; }
+  @media screen { #printArea { display: none; } }
+  @media print {
+    body { background: #fff; }
+    body > *:not(#printArea) { display: none !important; }
+    .bc, .bc *, .glue { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+  @media (max-width: 820px) {
+    .layout { grid-template-columns: minmax(0, 1fr); }
+    .layout > .col-pv { position: static; max-height: none; overflow: visible; }
+    .jump { display: inline-block; padding: 10px 0; }
+  }
+  @media (max-width: 600px) {
+    .row2 { flex-direction: column; gap: 0; }
+    section.card { padding: 16px 14px; }
+  }
+</style>
+<!--ANSHIN_CSS_START--><style>:root{--anshin-w:1008px;--anshin-pad:16px}.anshin-strip,.anshin{box-sizing:border-box;width:min(var(--anshin-w),calc(100% - 2 * var(--anshin-pad)));margin-left:auto;margin-right:auto}.anshin-strip{list-style:none;margin-top:10px;margin-bottom:0;padding:0;display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;font-size:.8rem;line-height:1.5}.anshin-strip li{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border:1px solid rgba(20,120,90,.45);border-radius:999px;background:rgba(20,120,90,.07)}.anshin-strip li.anshin-more{border:0;background:none;padding:3px 2px}.anshin-strip a,.anshin a{color:inherit}.anshin{margin-top:18px;margin-bottom:18px;padding:14px 18px;border:1px solid rgba(20,120,90,.45);border-radius:10px;background:rgba(20,120,90,.05);font-size:.86rem;line-height:1.7}.anshin h2{font-size:1rem;margin:0 0 6px}.anshin p{margin:0 0 6px}.anshin ul{margin:0;padding-left:1.2em}.anshin li{margin:3px 0}.anshin details{margin-top:6px}.anshin summary{cursor:pointer;font-weight:bold}.anshin .anshin-meta{margin:8px 0 0;font-size:.8rem;opacity:.85}@media print{.anshin,.anshin-strip{display:none!important}}</style><!--ANSHIN_CSS_END-->
+<!--UPSELL_CSS_START--><style>.upsell-top{box-sizing:border-box;width:min(var(--anshin-w,880px),calc(100% - 2 * var(--anshin-pad,16px)));margin:12px auto 0;font-size:.85rem;line-height:1.6}.upsell-top a{color:inherit}.upsell-assure{list-style:none;margin:12px 0 10px;padding:0;display:flex;flex-wrap:wrap;gap:6px 8px;font-size:.8rem;line-height:1.5}.upsell-assure li{padding:3px 10px;border:1px solid rgba(20,120,90,.45);border-radius:12px;background:rgba(20,120,90,.06)}.upsell-terms{margin:8px 0 0;font-size:.78rem;line-height:1.6;opacity:.85}.upsell-toast{position:fixed;left:50%;bottom:12px;transform:translateX(-50%);z-index:9999;box-sizing:border-box;width:min(520px,calc(100% - 24px));padding:14px 56px 14px 16px;border-radius:12px;background:#fff;color:#222;border:1px solid #c9c2d6;box-shadow:0 6px 24px rgba(0,0,0,.18);font-size:.88rem;line-height:1.6}.upsell-toast p{margin:0 0 6px;font-weight:bold}.upsell-toast ul{margin:0 0 10px;padding-left:1.2em}.upsell-toast li{margin:2px 0}.upsell-toast .upsell-note{display:block;margin-top:6px;font-size:.75rem;color:#555}.upsell-toast .upsell-go{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border-radius:8px;background:#c9283e;color:#fff;font-weight:bold;text-decoration:none}.upsell-toast.upsell-calm .upsell-go{background:#3f4a63}.upsell-toast .upsell-go:focus-visible,.upsell-toast .upsell-x:focus-visible{outline:3px solid #2560c4;outline-offset:2px}.upsell-toast .upsell-x{position:absolute;top:4px;right:4px;width:44px;height:44px;border:0;border-radius:8px;background:transparent;color:#555;font-size:1.3rem;line-height:1;cursor:pointer}.upsell-inline{white-space:nowrap;color:inherit;text-decoration:underline;text-underline-offset:2px}@media print{.upsell-top,.upsell-assure,.upsell-terms,.upsell-toast,.upsell-inline{display:none!important}}</style><!--UPSELL_CSS_END-->
+<!--JSONLD_START--><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"ブックカバーメーカー(無料のブックカバー作成ツール)","url":"https://uuhai0625.github.io/book-cover-maker/","description":"ブックカバーを無料で作成・印刷(登録不要)。文庫・新書・コミック・単行本の大きさと背幅を入れるだけで、ぴったりの紙のブックカバーのテンプレートができます。柄・色・タイトルを選んでA4・B4・A3に印刷。折る位置の印つき。","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","inLanguage":"ja","offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"author":{"@type":"Person","name":"uuhai0625","url":"https://uuhai0625.github.io/"}}</script><!--JSONLD_END-->
+</head>
+<body>
+
+<header>
+  <h1>ブックカバーメーカー(無料のブックカバー作成ツール)</h1>
+  <p>本の大きさと背幅を入れるだけで、ぴったりの紙のブックカバーを作って印刷。文庫・新書・コミックはA4、単行本はB4・A3で。柄と色、タイトルも入れられます。登録不要・ブラウザだけで使えます</p>
+</header>
+<!--ANSHIN_STRIP_START-->
+<ul class="anshin-strip" aria-label="データの扱い">
+  <li><span aria-hidden="true">✓</span> 入力内容はこの端末の中だけで処理</li>
+  <li><span aria-hidden="true">✓</span> 登録・ログイン不要</li>
+  <li><span aria-hidden="true">✓</span> 仕組みを公開中</li>
+  <li class="anshin-more"><a href="#anshin">データの扱いをくわしく</a></li>
+</ul>
+<!--ANSHIN_STRIP_END-->
+<!--UPSELL_TOP_START--><p class="upsell-top no-print" id="upsellTop">このページは無料のまま使えます。機能を増やしたい方は <a href="#pro-section">買い切り版(¥100・1回払い)<span aria-hidden="true"> ↓</span></a></p><!--UPSELL_TOP_END-->
+
+<main>
+<div class="layout">
+<div>
+
+  <section class="card" id="book-card">
+    <h2>① 本の大きさ</h2>
+    <label class="field">
+      <span class="lbl">本の種類</span>
+      <select id="in-book" data-save>
+        <option value="bunko" selected>文庫(105×148mm)</option>
+        <option value="bunkotall">背の高い文庫(106×157mm)</option>
+        <option value="shinsho">新書(103×182mm)</option>
+        <option value="comic">コミック 新書判(112×174mm)</option>
+        <option value="b6">B6判・コミック B6判(128×182mm)</option>
+        <option value="shiroku">四六判の単行本(127×188mm)</option>
+        <option value="a5">A5判(148×210mm)</option>
+        
+      </select>
+      <span class="hint">同じ種類でも本によって数mmちがうことがあります。表紙を定規で測って、近いものを選んでください</span>
+    </label>
+    
+    <label class="field">
+      <span class="lbl">背幅(本の厚み・mm)</span>
+      <input type="number" id="in-spine" min="2" max="80" step="0.5" value="15" inputmode="decimal" data-save>
+      <span class="hint">背の部分を定規で測ります。カバーをかけやすいように、自動で1mm足します</span>
+    </label>
+    <label class="check"><input type="checkbox" id="opt-fold" checked data-save> 上下も折り返す(本屋さんのカバーのように丈夫に。用紙が足りないときは折り返しなし)</label>
+    <a class="jump" href="#result-card">見本で確かめる ↓</a>
+  </section>
+
+  <section class="card" id="look-card">
+    <h2>② 柄と文字</h2>
+    <div class="row2">
+      <label class="field">
+        <span class="lbl">柄</span>
+        <select id="in-pat" data-save>
+          <option value="none">無地</option>
+          <option value="stripe" selected>ストライプ</option>
+          <option value="dot">ドット</option>
+          <option value="check">チェック</option>
+          <option value="grid">格子</option>
+        </select>
+      </label>
+      <label class="field">
+        <span class="lbl">色</span>
+        <select id="in-color" data-save>
+          <option value="#e8cfcf">くすみピンク</option>
+          <option value="#d3e8dc">ミント</option>
+          <option value="#d3e2f2" selected>みずいろ</option>
+          <option value="#f3ead2">クリーム</option>
+          <option value="#dcdcdc">グレー</option>
+          <option value="#2f3e5c">紺</option>
+          <option value="#2f5a46">深緑</option>
+          <option value="#7a2e3a">えんじ</option>
+          
+        </select>
+      </label>
+    </div>
+    
+    <label class="field">
+      <span class="lbl">表紙の文字(タイトルなど)</span>
+      <input type="text" id="in-title" maxlength="20" value="" placeholder="例: 読書ノート / 本の名前 / 空なら文字なし" data-save>
+    </label>
+    <div class="row2">
+      <label class="field">
+        <span class="lbl">2行目(名前など)</span>
+        <input type="text" id="in-author" maxlength="16" value="" placeholder="例: 2026年 はるの本" data-save>
+      </label>
+      <label class="field">
+        <span class="lbl">文字の向き</span>
+        <select id="in-dir" data-save>
+          <option value="tate">たて書き</option>
+          <option value="yoko">よこ書き</option>
+        </select>
+      </label>
+    </div>
+    <label class="check"><input type="checkbox" id="opt-spine" checked data-save> 背にも同じ文字を入れる</label>
+    
+    <a class="jump" href="#result-card">見本で確かめる ↓</a>
+  </section>
+
+  <section class="card" id="paper-card">
+    <h2>③ 用紙と印刷</h2>
+    <label class="field">
+      <span class="lbl">用紙(よこ向きで印刷)</span>
+      <select id="in-paper" data-save>
+        <option value="a4" selected>A4(家のプリンター)</option>
+        <option value="b4">B4(コンビニのプリント)</option>
+        <option value="a3">A3(コンビニのプリント)</option>
+      </select>
+    </label>
+    <label class="field">
+      <span class="lbl">折る位置の印</span>
+      <select id="in-marks" data-save>
+        <option value="tick">カバーの外に小さな印(切る前に折り筋をつける)</option>
+        <option value="line">カバーの上に点線</option>
+        <option value="none">なし</option>
+      </select>
+    </label>
+    
+  </section>
+
+</div>
+<div class="col-pv">
+  <section class="card" id="result-card">
+    <h2>④ 見本と印刷</h2>
+    <div class="preview" id="preview" role="img" aria-label="ブックカバーの見本"></div>
+    <p class="legend">見かた: 灰色の細い線=切る線/外の小さな印・点線=折る位置/斜線=のりしろ</p>
+    <div class="warn" id="warn" role="status"></div>
+    <div class="info" id="info"></div>
+    <div class="btn-row">
+      <button class="btn primary" type="button" id="printBtn" aria-describedby="warn">印刷する(PDF保存もここから)</button>
+    </div>
+    <div class="status" id="st" role="status"></div>
+    <ul class="fine" style="padding-left:1.2em;">
+      <li>印刷画面で、用紙サイズ=選んだ用紙、向き=横、倍率=100%(「用紙に合わせる」は外す)にします。</li>
+      <li>色や柄が出ないとき: Chrome・Edgeは「その他の設定」の「背景のグラフィック」に、Safariは「背景を印刷」にチェック。</li>
+      <li>PDFにしたいとき: パソコン・Androidはプリンターの選択で「PDFに保存」、iPhoneは印刷画面の共有ボタンから「"ファイル"に保存」。B4・A3はPDFにして、コンビニのプリントサービス(倍率は等倍)で印刷できます。</li>
+    </ul>
+  </section>
+</div>
+</div>
+
+  <section class="card" id="pro-section">
+    <h2>写真入り・自由な大きさ・A4 2枚分けも <span class="badge">買い切り版 ¥100(税込)</span></h2>
+    <div class="locked-panel">
+      <p class="lead">大きい本も家のA4プリンターで。好きな写真やイラストのブックカバーに。</p>
+      <p>このページの機能は無料でそのまま使えます。買い切り版(ダウンロード購入)では、次の機能が増えます:</p>
+      <ul class="feat-list">
+        <li><strong>A4 2枚に分けて印刷</strong>: 1枚に入らない大きさは、のりしろつきで2枚に分けます(B6判・四六判の単行本も、コンビニに行かず家のA4プリンターで。四六判は上下の折り返しなし。無料版は1枚に入る大きさのみ)</li>
+        <li><strong>写真・イラストを入れる</strong>: 表紙だけ、またはカバー全体に。画像はパソコンの中だけで使います(自分で撮った・描いた画像か、私的に使う範囲で)</li>
+        <li><strong>自由な大きさ</strong>: 表紙の幅と高さをmmで入れられます(手帳・小さめの同人誌などに。A4では高さ約19cmまで、B4・A3ならもっと大きい本も)</li>
+        <li><strong>好きな色</strong>で、柄と組み合わせ</li>
+        <li><strong>パソコンで使うHTMLファイルです</strong>(スマホでの動作は保証していません)。ダブルクリックで開くだけ、ネットにつながっていなくても使えます</li>
+      </ul>
+<!--UPSELL_ASSURE_START--><ul class="upsell-assure" aria-label="買い切り版について"><li>¥100(税込)の1回払い・月額なし</li><li>パソコン向けのHTMLファイル(スマホでは開けない機種あり)</li><li>ネットにつながっていなくても動く</li><li>BOOTHで購入(クレジットカード・楽天ペイは手数料なし、コンビニ・銀行払いは別途手数料)</li></ul><!--UPSELL_ASSURE_END-->
+      <a class="buy-btn" href="https://uuhai0625.booth.pm/items/9210543" id="buyLink" target="_blank" rel="noopener">買い切り版を見る(BOOTH・新しいタブ)</a><!--UPSELL_TERMS_START--><p class="upsell-terms">販売者の情報・返品などの販売条件は、BOOTHの商品ページでご確認ください。BOOTHでの購入にはpixivのアカウントが必要です。</p><!--UPSELL_TERMS_END-->
+    </div>
+  </section>
+
+  <section class="card guide" id="guide">
+    <h2>ブックカバーの作り方</h2>
+    <ol>
+      <li>①で本の種類を選び、背幅(本の厚み)を定規で測って入れます。</li>
+      <li>②で柄・色・表紙の文字を選びます。</li>
+      <li>③で用紙を選んで「印刷する」。</li>
+      <li><strong>切る前に</strong>、向かい合う折る位置の印どうしを定規で結び、ボールペンの先などで軽くなぞって折り筋をつけます(切ると印は消えます)。</li>
+      <li>外側の線(灰色の細い線)にそって切ります。</li>
+      <li>上下を折り返す設定なら、先に上と下を内側へ折ります。次に背の位置を合わせてカバーを巻き、左右の折り返しを、表紙と裏表紙のそれぞれの内側へ差し込みます。</li>
+    </ol>
+    
+    <h2 style="margin-top:16px;">ブックカバーのサイズのめやす</h2>
+    <table>
+      <tr><th>本の種類</th><th>表紙の大きさ</th><th>A4に入る?(背幅15mm)</th></tr>
+      <tr><td>文庫</td><td>105×148mm</td><td>入る(左右の折り返しは約2.7cm。少し短め)</td></tr>
+      <tr><td>新書</td><td>103×182mm</td><td>入る(左右の折り返しは約2.9cm、上下は短め)</td></tr>
+      <tr><td>コミック 新書判</td><td>112×174mm</td><td>入る(左右の折り返しは約2cm)</td></tr>
+      <tr><td>B6判・四六判</td><td>127〜128mm幅</td><td>B4かA3で1枚に<span class="free-only">(買い切り版はA4 2枚に分けられます)</span></td></tr>
+      <tr><td>A5判</td><td>148×210mm</td><td>A4には入りません。A3がおすすめ(B4は折り返しが約1.8cmと短め)</td></tr>
+    </table>
+    <h2 style="margin-top:16px;">ブックカバーのよくある疑問</h2>
+    <ul>
+      <li><strong>サイズが合わないときは?</strong> 表紙の幅・高さは本によって数mmちがいます。ゆるいときは背幅を少し小さく、きついときは少し大きくして印刷し直します。</li>
+      <li><strong>どんな紙がいい?</strong> ふつうのコピー用紙でも作れます。少し厚手の上質紙やクラフト紙、包装紙のような薄い紙(プリンターが対応するもの)にすると、破れにくく折りやすいです。</li>
+      <li><strong>折り返しが短いと言われた</strong>: 左右の折り返しが短いと外れやすくなります。B4・A3の用紙にするか、<span class="free-only">買い切り版の</span>「2枚に分けて印刷」を使います。</li>
+      <li><strong>本の表紙や好きなキャラクターの絵を使っていい?</strong> 市販の本の表紙や、キャラクター・他の人のイラスト・写真を使う場合は、自分が読む本にかけるためだけに作ってください(私的使用の範囲)。作ったカバーを人に配る、ネットに載せる、売ることはできません。自分で撮った写真・描いた絵は使えますが、他の人の作品・ロゴ・人の顔が写っていないか確かめてください。</li>
+    </ul>
+  </section>
+
+</main>
+
+<!--ANSHIN_START-->
+<section class="anshin" id="anshin" aria-labelledby="anshin-title">
+  <h2 id="anshin-title">データの扱いについて</h2>
+  <p>このページには、入力した内容を受け取る仕組みがありません。入力した文字や数字は、あなたのスマホやパソコンの中だけで処理されます。</p>
+  <ul>
+    <li>会員登録・ログイン・メールアドレスの入力はありません。</li>
+    <li>自分で確かめたい方へ: ページを開いたあと機内モードにしても、そのまま使えます。</li>
+  </ul>
+  <details>
+    <summary>もっとくわしく(保存・アクセス解析・公開について)</summary>
+    <ul>
+      <li>保存されるデータは、この端末のこのブラウザの中にだけ残ります(localStorage・sessionStorage)。共用のパソコンでは使い終わったら消してください。</li>
+      <li>アクセス解析(Google Analytics)のため、見たページのURL・参照元・端末やブラウザの種類・おおよその地域(IPアドレスから推定)・Cookieの識別子・BOOTHへのリンクのクリック・どのボタンを押したか(回数や選んだ設定を含む)がGoogleに送られます。目的は利用状況の把握です。入力した文字や画像は送りません。(<a href="https://policies.google.com/technologies/partner-sites?hl=ja" target="_blank" rel="noopener">Googleによるデータの使用</a>/<a href="https://tools.google.com/dlpage/gaoptout?hl=ja" target="_blank" rel="noopener">計測を止めるアドオン</a>。止めてもツールはそのまま使えます)</li>
+      <li>このツールの結果や作成物は目安です。入稿・契約・販売などの前には、印刷所や公式の情報でご確認ください。</li>
+      <li>処理の中身はすべて公開しています(詳しい方向け: <a href="https://github.com/uuhai0625/book-cover-maker" target="_blank" rel="noopener">GitHub</a>)。</li>
+    </ul>
+  </details>
+  <p class="anshin-meta">作っている人: ウーハイ(個人開発)/不具合・ご質問は<a href="https://x.com/uuhai0625" target="_blank" rel="noopener">X(@uuhai0625)</a>へ/<a href="https://uuhai0625.github.io/" target="_blank" rel="noopener">ほかのツール</a>/この説明の更新日: 2026-10-13</p>
+</section>
+<!--ANSHIN_END-->
+
+<footer>
+  <p id="privacyNote">本ツールは完全にブラウザ内で動作し、入力した内容はどこにも送信されません。</p>
+  <p><a href="https://uuhai0625.booth.pm/" target="_blank" rel="noopener">他のツールも見る(BOOTHショップ)</a></p>
+  <p>不具合・ご要望は X <a href="https://x.com/uuhai0625" target="_blank" rel="noopener">@uuhai0625</a> まで。</p>
+  <p class="related-tools no-print">関連する無料ツール: <a href="https://uuhai0625.github.io/hyoushi-template/" target="_blank" rel="noopener">表紙テンプレートメーカー</a> ・ <a href="https://uuhai0625.github.io/sehaba-calc/" target="_blank" rel="noopener">同人誌 背幅計算</a> ・ <a href="https://uuhai0625.github.io/photo-calendar-maker/" target="_blank" rel="noopener">写真カレンダーメーカー</a> ・ <a href="https://uuhai0625.github.io/stamp-card-maker/" target="_blank" rel="noopener">スタンプカードメーカー</a> ・ <a href="https://uuhai0625.github.io/#free-tools">ツール一覧</a></p>
+</footer>
+
+<div id="printArea"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  var EDITION = "free"; // "full" で買い切り完全版
+
+  function track(name, params) {
+    if (!window.dataLayer) return;
+    (function () { window.dataLayer.push(arguments); })("event", name, params || {});
+  }
+  var $ = function (id) { return document.getElementById(id); };
+  function el(tag, attrs, text) {
+    var e = document.createElement(tag);
+    if (attrs) Object.keys(attrs).forEach(function (k) { if (k === "class") e.className = attrs[k]; else e.setAttribute(k, attrs[k]); });
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  function setSt(id, msg, err) { var e = $(id); e.textContent = msg; e.classList.toggle("err", !!err); }
+  function box(e, x, y, w, h) { e.style.left = x + "mm"; e.style.top = y + "mm"; e.style.width = w + "mm"; e.style.height = h + "mm"; return e; }
+
+  var LAST_KEY = "bookcover_last_v1";
+  var BOOKS = { bunko: [105, 148], bunkotall: [106, 157], shinsho: [103, 182], comic: [112, 174], b6: [128, 182], shiroku: [127, 188], a5: [148, 210] };
+  var PAPERS = { a4: [297, 210, "A4"], b4: [364, 257, "B4"], a3: [420, 297, "A3"] };
+  var MARGIN = 7;          // 用紙の端の、印刷しない余白(mm)
+  var FLAP_MAX = 80, FLAP_MIN = 18, FLAP_GOOD = 30, FLAP_WARN = 25, GLUE = 10;   // FLAP_GOOD未満なら2枚分けで長くする、FLAP_WARN未満で注意
+
+  // 買い切り版で差し替えるフック(無料版では何もしない)
+  var extendSettings = function (s) { return s; };
+  var syncExtra = function () {};
+
+  // ===== 設定 =====
+  function numVal(id, def, min, max) {
+    var raw = String($(id).value).trim();
+    var v = raw === "" ? def : Number(raw);
+    if (!isFinite(v)) v = def;
+    return Math.max(min, Math.min(max, v));
+  }
+  function oneLine(v, n) { return Array.from(String(v || "").replace(/\s+/g, " ").trim()).slice(0, n).join(""); }
+  function settings() {
+    var book = BOOKS[$("in-book").value] ? $("in-book").value : "bunko";
+    var s = {
+      book: book,
+      w: BOOKS[book][0], h: BOOKS[book][1],
+      spine: Math.round(numVal("in-spine", 15, 2, 80) * 2) / 2,
+      fold: $("opt-fold").checked,
+      pat: /^(none|stripe|dot|check|grid)$/.test($("in-pat").value) ? $("in-pat").value : "stripe",
+      color: /^#[0-9a-f]{6}$/i.test($("in-color").value) ? $("in-color").value : "#d3e2f2",
+      title: oneLine($("in-title").value, 20),
+      author: oneLine($("in-author").value, 16),
+      dir: $("in-dir").value === "yoko" ? "yoko" : "tate",
+      spineText: $("opt-spine").checked,
+      paper: PAPERS[$("in-paper").value] ? $("in-paper").value : "a4",
+      marks: /^(tick|line|none)$/.test($("in-marks").value) ? $("in-marks").value : "tick",
+      split: false,
+      img: null, imgPos: "front"
+    };
+    return extendSettings(s);
+  }
+
+  // ===== 寸法(mm) =====
+  function geom(s) {
+    var P = PAPERS[s.paper], uw = P[0] - 2 * MARGIN, uh = P[1] - 2 * MARGIN;
+    var W = s.w + 1, H = s.h + 1, Sp = s.spine + 1;   // 表紙は折り目の分、高さと背は入れやすいように1mmのゆとり
+    var g = { W: W, H: H, Sp: Sp, f: 0, paperW: P[0], paperH: P[1], uw: uw, uh: uh, foldShort: false, split: false, ok: true, why: "" };
+    if (s.fold) {
+      g.f = Math.min(15, Math.floor((uh - H) / 2));
+      if (g.f < 6) { g.f = 0; g.foldShort = true; }
+    }
+    g.totalH = H + 2 * g.f;
+    if (g.totalH > uh) { g.ok = false; g.why = "tall"; }
+    var core = 2 * W + Sp;
+    var flap1 = Math.min(FLAP_MAX, Math.floor((uw - core) / 2));
+    if (flap1 >= FLAP_GOOD || !s.split) {
+      g.F = flap1;
+    } else {
+      // 2枚に分ける: 裏表紙のまん中で切る。2枚目(裏表紙の半分+背+表紙+折り返し)が入る長さの折り返しにする
+      var flap2 = Math.min(FLAP_MAX, Math.floor(uw - (W / 2 + Sp + W)));
+      if (flap2 > flap1) { g.split = true; g.F = flap2; } else g.F = flap1;
+    }
+    if (g.ok && g.F < FLAP_MIN) { g.ok = false; g.why = "wide"; }
+    g.totalW = 2 * g.F + core;
+    g.seam = g.F + W / 2;
+    // 折り目の位置(左から): 折り返し|裏表紙|背|表紙|折り返し
+    g.xs = [g.F, g.F + W, g.F + W + Sp, g.F + 2 * W + Sp];
+    return g;
+  }
+
+  // ===== 柄 =====
+  function lum(hex) {
+    var v = parseInt(hex.slice(1), 16), ch = [v >> 16 & 255, v >> 8 & 255, v & 255].map(function (x) { x /= 255; return x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4); });
+    return 0.2126 * ch[0] + 0.7152 * ch[1] + 0.0722 * ch[2];
+  }
+  function patternCss(s) {
+    var dark = lum(s.color) < 0.3, pc = dark ? "rgba(255,255,255,.16)" : "rgba(0,0,0,.08)";
+    if (s.pat === "stripe") return "repeating-linear-gradient(90deg, " + pc + " 0 4mm, transparent 4mm 9mm)";
+    if (s.pat === "dot") return "radial-gradient(circle, " + pc.replace(/[.0-9]+\)$/, dark ? ".3)" : ".14)") + " 0 1mm, transparent 1.1mm) 0 0 / 6mm 6mm";
+    if (s.pat === "check") return "linear-gradient(90deg, " + pc + " 50%, transparent 50%) 0 0 / 10mm 10mm, linear-gradient(" + pc + " 50%, transparent 50%) 0 0 / 10mm 10mm";
+    if (s.pat === "grid") return "repeating-linear-gradient(0deg, " + pc + " 0 .4mm, transparent .4mm 7mm), repeating-linear-gradient(90deg, " + pc + " 0 .4mm, transparent .4mm 7mm)";
+    return "none";
+  }
+  function textUnits(str) { return Array.from(str || "").reduce(function (a, c) { return a + (c.charCodeAt(0) < 0x2000 ? 0.72 : 1.0); }, 0); }
+
+  // ===== カバー全体のDOM(左上が(0,0)、外側に折り位置の印) =====
+  function coverEl(s, g) {
+    var wrap = el("div", { class: "bcw" });
+    wrap.style.width = g.totalW + "mm"; wrap.style.height = g.totalH + "mm";
+    var bc = box(el("div", { class: "bc" }), 0, 0, g.totalW, g.totalH);
+    bc.style.background = s.color;
+    var pat = el("div", { class: "pat" });
+    pat.style.background = patternCss(s);
+    bc.appendChild(pat);
+    var fx = g.xs[2];   // 表紙の左端
+    if (s.img) {
+      var im = el("img", { alt: "" });
+      im.src = s.img;
+      if (s.imgPos === "all") box(im, 0, 0, g.totalW, g.totalH); else box(im, fx, g.f, g.W, g.H);
+      bc.appendChild(im);
+    }
+    var darkBg = lum(s.color) < 0.18;
+    var tc = darkBg && !s.img ? "#fff" : "#222";                              // 表紙(画像は表紙に必ずかかる)
+    var stc = darkBg && !(s.img && s.imgPos === "all") ? "#fff" : "#222";    // 背(「表紙だけ」なら背は色のまま)
+    if (s.title || s.author) {
+      var ft = box(el("div", { class: "ft" + (s.dir === "tate" ? " tate" : "") }), fx + g.W * 0.1, g.f + g.H * 0.08, g.W * 0.8, g.H * 0.84);
+      ft.style.color = tc;
+      var tu = Math.max(textUnits(s.title), 1), au = Math.max(textUnits(s.author), 1);
+      var room = s.dir === "tate" ? g.H * 0.8 : g.W * 0.78;
+      var tfs = Math.min(s.dir === "tate" ? g.W * 0.14 : g.W * 0.11, room / tu);
+      var afs = Math.min(tfs * 0.55, room / au);
+      if (s.title) { var t = el("div", { class: "tt" }, s.title); t.style.fontSize = tfs + "mm"; ft.appendChild(t); }
+      if (s.author) { var a = el("div", { class: "au" }, s.author); a.style.fontSize = afs + "mm"; ft.appendChild(a); }
+      if (s.img) { ft.style.textShadow = "0 0 1.2mm #fff, 0 0 1.2mm #fff"; }
+      bc.appendChild(ft);
+      if (s.spineText && g.Sp >= 5) {
+        var sp = box(el("div", { class: "sp" }), g.xs[1], g.f + g.H * 0.05, g.Sp, g.H * 0.9);
+        sp.style.color = stc;
+        var sfs = Math.min(g.Sp * 0.55, 7);
+        var len = textUnits(s.title) * sfs + (s.author ? textUnits(s.author) * sfs * 0.75 + sfs : 0);
+        if (len > g.H * 0.86) sfs *= g.H * 0.86 / len;
+        if (s.title) { var st = el("span", { class: "tt" }, s.title); st.style.fontSize = sfs + "mm"; sp.appendChild(st); }
+        if (s.author) { var sa = el("span", { class: "au" }, s.author); sa.style.fontSize = sfs * 0.75 + "mm"; sp.appendChild(sa); }
+        if (s.img && s.imgPos === "all") sp.style.textShadow = "0 0 1mm #fff, 0 0 1mm #fff";
+        bc.appendChild(sp);
+      }
+    }
+    if (s.marks === "line") {
+      var lc = darkBg && !(s.img && s.imgPos === "all") ? "rgba(255,255,255,.6)" : "rgba(0,0,0,.4)";
+      g.xs.forEach(function (x) { var l = box(el("div", { class: "fl" }), x, 0, 0, g.totalH); l.style.borderLeftWidth = "0.25mm"; l.style.borderColor = lc; bc.appendChild(l); });
+      if (g.f) [g.f, g.f + g.H].forEach(function (y) { var l = box(el("div", { class: "fl" }), 0, y, g.totalW, 0); l.style.borderTopWidth = "0.25mm"; l.style.borderColor = lc; bc.appendChild(l); });
+    }
+    wrap.appendChild(bc);
+    if (s.marks === "tick") {
+      g.xs.forEach(function (x) {
+        wrap.appendChild(box(el("div", { class: "tick" }), x - 0.2, -3.5, 0.4, 2.8));
+        wrap.appendChild(box(el("div", { class: "tick" }), x - 0.2, g.totalH + 0.7, 0.4, 2.8));
+      });
+      if (g.f) [g.f, g.f + g.H].forEach(function (y) {
+        wrap.appendChild(box(el("div", { class: "tick" }), -3.5, y - 0.2, 2.8, 0.4));
+        wrap.appendChild(box(el("div", { class: "tick" }), g.totalW + 0.7, y - 0.2, 2.8, 0.4));
+      });
+    }
+    return wrap;
+  }
+
+  // ===== 用紙(1枚、または2枚に分ける) =====
+  function pagesEl(s, g) {
+    function page() { var p = el("div", { class: "page" }); p.style.width = g.paperW + "mm"; p.style.height = (g.paperH - 1) + "mm"; return p; }
+    if (!g.split) { var p = page(); p.appendChild(coverEl(s, g)); return [p]; }
+    var pad = 6, out = [];
+    [[0, g.seam + GLUE], [g.seam, g.totalW]].forEach(function (r, i) {
+      var p = page(), vp = el("div", { class: "vp" });
+      vp.style.width = (r[1] - r[0] + 2 * pad) + "mm"; vp.style.height = (g.totalH + 2 * pad) + "mm";
+      var cw = coverEl(s, g);
+      cw.style.position = "absolute"; cw.style.left = (pad - r[0]) + "mm"; cw.style.top = pad + "mm";
+      if (i === 0) {
+        var gl = el("div", { class: "glue" });
+        gl.style.left = g.seam + "mm"; gl.style.width = GLUE + "mm";
+        gl.appendChild(el("span", null, "のりしろ(2枚目を重ねて貼る)"));
+        cw.appendChild(gl);
+      } else {
+        var sc = el("div", { class: "seam-cut" }); sc.style.left = g.seam + "mm"; cw.appendChild(sc);
+      }
+      vp.appendChild(cw); p.appendChild(vp); out.push(p);
+    });
+    return out;
+  }
+
+  // ===== 画面 =====
+  var lastRun = null;
+  function render() {
+    var s = settings();
+    syncExtra(s); saveLast();
+    var g = geom(s);
+    var pv = $("preview"), info = $("info"), warn = $("warn");
+    pv.innerHTML = ""; info.textContent = ""; warn.textContent = ""; warn.classList.remove("err");
+    lastRun = g.ok ? { s: s, g: g } : null;
+    $("printBtn").disabled = !g.ok;
+    var P = PAPERS[s.paper];
+    if (!g.ok) {
+      var m = g.why === "tall" ? "この本は" + P[2] + "の用紙(よこ)の高さに入りません。" + (s.fold ? "「上下も折り返す」を外すか、" : "") + "大きい用紙を選んでください。"
+        : s.split ? "この本は" + P[2] + "では2枚に分けても入りません(左右の折り返しが" + FLAP_MIN + "mmに届きません)。大きい用紙を選んでください。"
+        : "この本は" + P[2] + "の用紙1枚に入りません(左右の折り返しが" + FLAP_MIN + "mmに届きません)。大きい用紙を選んでください。" + (EDITION === "full" ? "「2枚に分けて印刷」にチェックを入れても入れられます。" : "A4 2枚に分けて印刷できるのは買い切り版のみです。");
+      warn.textContent = m; warn.classList.add("err");
+      pv.setAttribute("aria-label", "ブックカバーの見本(印刷できません)");
+      $("printArea").innerHTML = "";
+      return;
+    }
+    var pages = pagesEl(s, g), avail = Math.max((pv.clientWidth - 24) || 300, 120);
+    var sc = Math.min(avail / (g.paperW * 3.78), 1);
+    pages.forEach(function (p, i) {
+      var holder = el("div", { class: "sheet" });
+      holder.style.width = g.paperW * 3.78 * sc + "px"; holder.style.height = (g.paperH - 1) * 3.78 * sc + "px";
+      p.style.transform = "scale(" + sc + ")"; p.style.transformOrigin = "0 0";
+      holder.appendChild(p); pv.appendChild(holder);
+      if (pages.length > 1) pv.appendChild(el("div", { class: "sheet-cap" }, (i + 1) + "枚目"));
+    });
+    var msg = "カバーの大きさ 約" + Math.round(g.totalW) + "×" + Math.round(g.totalH) + "mm(左右の折り返し 各" + g.F + "mm" + (g.f ? "、上下の折り返し 各" + g.f + "mm" : "") + ")。" + P[2] + "よこ" + (g.split ? "2枚に分けて" : "1枚に") + "印刷します。";
+    if (g.split) msg += " 1枚目の「のりしろ」に、2枚目の左端(黒い太い線で切る)を合わせて重ねて貼ります(下の「2枚に分けたときの貼り方」)。";
+    else if (s.split) msg += " 1枚に十分入るので、分けずに印刷します。";
+    info.textContent = msg;
+    pv.setAttribute("aria-label", "ブックカバーの見本: " + msg);
+    var w = [];
+    if (s.fold && g.foldShort) w.push("この用紙では上下を折り返す長さが足りないので、上下は折り返さず本の高さで切ります。");
+    if (g.F < FLAP_WARN) w.push("左右の折り返しが短め(" + g.F + "mm)なので、外れやすいかもしれません。B4・A3の用紙だと長くできます。" + (EDITION === "full" ? (s.split ? "" : "「2枚に分けて印刷」でも長くできます。") : "A4 2枚に分けて長くできるのは買い切り版のみです。"));
+    warn.textContent = w.length ? "⚠ " + w.join(" ") : "";
+    buildPrint();
+  }
+  var rTimer = null;
+  function onSetting() { clearTimeout(rTimer); rTimer = setTimeout(function () { rTimer = null; render(); }, 120); }
+
+  // ===== 印刷 =====
+  var pageStyle = null;
+  function buildPrint() {
+    var area = $("printArea");
+    area.innerHTML = "";
+    if (!lastRun) return false;
+    var g = lastRun.g;
+    if (!pageStyle) { pageStyle = el("style"); document.head.appendChild(pageStyle); }
+    pageStyle.textContent = "@page { size: " + g.paperW + "mm " + g.paperH + "mm; margin: 0; }";
+    pagesEl(lastRun.s, g).forEach(function (p) { area.appendChild(p); });
+    return true;
+  }
+  $("printBtn").addEventListener("click", function () {
+    clearTimeout(rTimer); rTimer = null; render();
+    if (!lastRun) return;
+    var s = lastRun.s, g = lastRun.g;
+    setSt("st", "印刷画面を開きました。用紙は" + PAPERS[s.paper][2] + "・横、倍率は「100%」にしてください。");
+    track("bookcover_print", { book: s.book, paper: s.paper, fold: g.f ? 1 : 0, split: g.split ? 1 : 0, img: s.img ? 1 : 0, pat: s.pat });
+    // 画像の読み込みを待ってから印刷画面を開く(印刷で画像が抜けないように)
+    var imgs = [].slice.call($("printArea").querySelectorAll("img"));
+    Promise.all(imgs.map(function (im) { return im.decode ? im.decode().catch(function () {}) : null; })).then(function () {
+      setTimeout(function () { window.print(); }, 50);
+    });
+  });
+  // Ctrl+Pなどで開いたとき用(印刷用の中身は描くたびに作ってある。入力の途中なら描き直す)
+  window.addEventListener("beforeprint", function () { if (rTimer) { clearTimeout(rTimer); rTimer = null; render(); } });
+
+  // ===== 設定の記憶(このブラウザだけ。画像は残さない) =====
+  function snapshot() {
+    var o = {};
+    document.querySelectorAll("[data-save]").forEach(function (e) {
+      if (e.type === "checkbox") o[e.id] = e.checked; else o[e.id] = e.value;
+    });
+    return o;
+  }
+  function applySnap(o) {
+    if (!o || typeof o !== "object") return;
+    document.querySelectorAll("[data-save]").forEach(function (e) {
+      if (e.type === "checkbox") { if (typeof o[e.id] === "boolean") e.checked = o[e.id]; return; }
+      if (typeof o[e.id] !== "string") return;
+      var v = o[e.id].slice(0, e.maxLength > 0 ? e.maxLength : 16);
+      if (e.tagName === "SELECT" && ![].some.call(e.options, function (op) { return op.value === v; })) return;
+      if (e.type === "color" && !/^#[0-9a-f]{6}$/i.test(v)) return;
+      if (e.type === "number" && !isFinite(Number(v))) return;
+      e.value = v;
+    });
+  }
+  var saveTimer = null;
+  function saveLast() {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function () { try { localStorage.setItem(LAST_KEY, JSON.stringify(snapshot())); } catch (e) {} }, 300);
+  }
+  try { applySnap(JSON.parse(localStorage.getItem(LAST_KEY) || "null")); } catch (e) {}
+
+  document.querySelectorAll("[data-save]").forEach(function (e) {
+    e.addEventListener(e.type === "text" || e.type === "number" || e.type === "color" ? "input" : "change", onSetting);
+    if (e.type === "number") e.addEventListener("change", function () {
+      // 入れ終わったら、実際に使う値(範囲内)に直して見せる
+      var v = numVal(e.id, Number(e.defaultValue), Number(e.min), Number(e.max));
+      e.value = String(e.step === "0.5" ? Math.round(v * 2) / 2 : Math.round(v)); onSetting();
+    });
+  });
+
+  
+
+  if (EDITION !== "full") {
+    $("privacyNote").innerHTML = '入力した内容はどこにも送信されません(すべてこのブラウザの中で処理します)。このページでは利用状況の把握のためにアクセス解析(Google Analytics)を使っています。<a href="https://policies.google.com/technologies/partner-sites?hl=ja" target="_blank" rel="noopener">Googleによるデータの使用について</a>';
+  }
+  var lastW = window.innerWidth;
+  window.addEventListener("resize", function () { if (window.innerWidth !== lastW) { lastW = window.innerWidth; onSetting(); } });
+  render();
+})();
+</script>
+<!--UPSELL_JS_START-->
+<script>
+(function () {
+  "use strict";
+  var q = new URLSearchParams(location.search);
+  if (q.get("obs") === "1" || document.documentElement.classList.contains("obs")) return;
+  // 小さな案内(トースト)は、買い切り版がパソコン向けなので、マウス操作の広い画面でだけ出す
+  var pc = !!(window.matchMedia && matchMedia("(pointer:fine) and (min-width:720px)").matches);
+  var buy = document.getElementById("buyLink");
+  var pro = document.getElementById("pro-section");
+  if (!buy || !pro) return;
+  var FEATS = [], CALM = false;
+  var path = location.pathname.replace(/index\.html$/, "");
+  var KEY_CLOSED = "upsell_closed_until:" + path, KEY_SHOWN = "upsell_shown:" + path;
+  function store(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
+  function sess(k, v) { try { if (v === undefined) return sessionStorage.getItem(k); sessionStorage.setItem(k, v); } catch (e) { return null; } }
+  function gtagEv(name, p) { if (!window.dataLayer) return; (function () { window.dataLayer.push(arguments); })("event", name, p || {}); }
+
+  var shown = false;
+  function blocked() {
+    if (shown || sess(KEY_SHOWN) === "1") return true;
+    var until = Number(store(KEY_CLOSED) || 0);
+    return until && Date.now() < until;
+  }
+  function feats() {
+    if (FEATS.length) return FEATS;
+    var out = [];
+    var lis = pro.querySelectorAll(".feat-list li");
+    for (var i = 0; i < lis.length && out.length < 3; i++) {
+      var all = lis[i].textContent.replace(/\s+/g, " ").trim();
+      if (/スマホ|HTMLファイル|パソコンで使う/.test(all)) continue;
+      var st = lis[i].querySelectorAll("strong");
+      var t = st.length === 1 ? st[0].textContent : all.split(/[::。]/)[0];
+      t = t.replace(/[((][^()()]*[))]/g, "").replace(/\s+/g, " ").trim();
+      if (t.length > 40) t = t.slice(0, 39) + "…";
+      if (t) out.push(t);
+    }
+    return out;
+  }
+  // 「〜してください」「できません」など、失敗の表示が出ていたら案内しない
+  function failed() {
+    var els = document.querySelectorAll('[role="status"], [role="alert"], [aria-live]');
+    for (var i = 0; i < els.length; i++) {
+      if (pro.contains(els[i]) || !els[i].offsetParent) continue;
+      if (/ください|できません|できませんでした|失敗|ありません|エラー/.test(els[i].textContent)) return true;
+    }
+    return false;
+  }
+  function proVisible() {
+    var r = pro.getBoundingClientRect();
+    return r.top < innerHeight && r.bottom > 0;
+  }
+  function show(trigger) {
+    if (!pc || blocked() || (trigger === "action" && failed()) || proVisible()) return;
+    var list = feats();
+    if (!list.length) return;
+    shown = true;
+    sess(KEY_SHOWN, "1");
+    var box = document.createElement("aside");
+    box.className = "upsell-toast" + (CALM ? " upsell-calm" : "");
+    box.setAttribute("aria-label", "買い切り版のご案内");
+    box.setAttribute("aria-live", "polite");
+    document.body.appendChild(box);
+    var p = document.createElement("p");
+    p.textContent = trigger === "limit" && CALM ? "件数が多いときは、パソコン用の買い切り版(¥100・税込)で続けられます:"
+      : trigger === "limit"
+      ? "この先は買い切り版の機能です。パソコン用の買い切り版(¥100・税込)なら:"
+      : CALM ? "件数が多いときや、香典返しの準備をまとめたいときのために、パソコン用の買い切り版(¥100・税込)もあります:" : "うまくできましたか? パソコン用の買い切り版(¥100・税込)なら、さらに:";
+    var ul = document.createElement("ul");
+    list.forEach(function (t) { var li = document.createElement("li"); li.textContent = t; ul.appendChild(li); });
+    var a = document.createElement("a");
+    a.className = "upsell-go";
+    a.id = "upsellToastLink";
+    a.href = buy.href;
+    a.target = "_blank";
+    a.rel = "noopener";
+    a.textContent = "BOOTHで見る(新しいタブ)";
+    var bg = getComputedStyle(buy).backgroundColor;
+    if (bg && !/rgba?\(0, 0, 0, 0\)|transparent/.test(bg)) a.style.background = bg;
+    var x = document.createElement("button");
+    x.type = "button";
+    x.className = "upsell-x";
+    x.setAttribute("aria-label", "この案内を閉じる");
+    x.textContent = "×";
+    function close(remember) {
+      if (box.parentNode) box.parentNode.removeChild(box);
+      document.removeEventListener("keydown", onKey);
+      if (remember) store(KEY_CLOSED, String(Date.now() + 7 * 864e5));
+    }
+    // Escはページ側の操作(選択解除など)にも使われるので、案内の中にフォーカスがある時だけ閉じる
+    function onKey(e) { if (e.key === "Escape" && box.contains(document.activeElement)) close(true); }
+    x.addEventListener("click", function () { close(true); });
+    a.addEventListener("click", function () { setTimeout(function () { close(false); }, 0); });
+    document.addEventListener("keydown", onKey);
+    setTimeout(function () {
+      var note = document.createElement("small");
+      note.className = "upsell-note";
+      note.textContent = "スマホではファイルを開けない機種があります";
+      box.appendChild(x); box.appendChild(p); box.appendChild(ul); box.appendChild(a); box.appendChild(note);
+    }, 50);
+    gtagEv("upsell_show", { trigger: trigger });
+  }
+
+  // 保存・コピー・印刷・書き出しを押した直後(結果を受け取れたタイミング)
+  var OK = /保存|コピー|印刷|書き出|ダウンロード|共有|PDF/;
+  var NG = /読み込|リセット|消|削除|このブラウザに保存|確認|イメージを見る|戻/;
+  document.addEventListener("click", function (e) {
+    var el = e.target && e.target.closest ? e.target.closest("button, a[download], input[type=button], input[type=submit]") : null;
+    if (!el || el.closest("#pro-section, .upsell-toast, #anshin")) return;
+    var label = (el.textContent || el.value || "").replace(/\s+/g, " ");
+    if (!OK.test(label) || NG.test(label)) return;
+    setTimeout(function () { show("action"); }, 1500);
+  }, true);
+
+  // 無料版の上限まわり
+  // (1) ページが出す「買い切り版」の一文に、購入欄へのリンクを足す(スマホでも)。🔒のタブは薄く表示されているので入れない
+  // (2) 案内(パソコンのみ)は、はっきりした合図のときだけ出す: 🔒のクリック・買い切り版にふれたalert・
+  //     初めて出た「〜まで/のみ/以降/入っていません」の上限の一文(計算のたびに出る誘導文や、同じ文の描き直しでは出さない)
+  var SKIP = "#pro-section, .upsell-toast, .upsell-top, #anshin, a, button, label, select, option, h1, h2, h3, .badge, header, footer, nav, textarea, pre, code, [contenteditable], svg";
+  var LIMIT = /まで|のみ|以降|入っていません/;
+  var seenText = {}, ready = false;
+  function goPro(e) {
+    if (e) e.preventDefault();
+    pro.setAttribute("tabindex", "-1");
+    pro.scrollIntoView({ behavior: "smooth", block: "start" });
+    pro.focus({ preventScroll: true });
+  }
+  function linkify(root, deep) {
+    var limitHit = false;
+    var els = root.matches("p, div, span, li") ? [root] : [];
+    if (deep) els = els.concat([].slice.call(root.querySelectorAll("p, div, span, li")));
+    els.forEach(function (el) {
+      if (el.closest(SKIP) || el.closest('[role="radio"], [role="option"], [role="tab"], [role="button"], [tabindex]:not([tabindex="-1"])') || el.querySelector("a, button, p, div, li, input, label")) return;
+      // 選択肢の「○○(買い切り版)」ではなく、文として買い切り版にふれている要素だけ
+      var own = "";
+      for (var n = el.firstChild; n; n = n.nodeType === 1 && n.className === "upsell-inline" ? null : n.nextSibling) if (n.nodeType === 3) own += n.nodeValue;
+      own = own.trim();
+      if (own.indexOf("買い切り版") < 0 || /[((]買い切り版[))]$/.test(own) || /^🔒/.test(own)) return;
+      var key = own.replace(/\d+/g, "#");
+      if (ready && !seenText[key] && LIMIT.test(own) && !el.closest(".teaser, #teaser, [id$=teaser], #tz")) limitHit = true;
+      seenText[key] = 1;
+      if (el.querySelector(".upsell-inline")) return;
+      var a = document.createElement("a");
+      a.className = "upsell-inline";
+      a.href = "#pro-section";
+      a.setAttribute("aria-label", "くわしく:買い切り版の説明へ移動");
+      a.textContent = "くわしく";
+      var ar = document.createElement("span");
+      ar.setAttribute("aria-hidden", "true");
+      ar.textContent = " ↓";
+      a.appendChild(ar);
+      a.addEventListener("click", goPro);
+      el.appendChild(document.createTextNode(" "));
+      el.appendChild(a);
+    });
+    return limitHit;
+  }
+  linkify(document.body, true);
+  setTimeout(function () { ready = true; }, 1500);
+  var topLink = document.querySelector("#upsellTop a");
+  if (topLink) topLink.addEventListener("click", goPro);
+  new MutationObserver(function (ms) {
+    // 変わったところだけを調べる(足された要素はその中も、文字の変更は親要素だけ)
+    var hit = false, done = new Set();
+    function check(t, deep) {
+      if (!t || t.nodeType !== 1 || done.has(t) || t.closest(".upsell-toast")) return;
+      done.add(t);
+      if (linkify(t, deep)) hit = true;
+    }
+    ms.forEach(function (m) {
+      if (m.type === "characterData") { check(m.target.parentNode, false); return; }
+      check(m.target, false);
+      for (var i = 0; i < m.addedNodes.length; i++) if (m.addedNodes[i].nodeType === 1) check(m.addedNodes[i], true);
+    });
+    if (hit) setTimeout(function () { show("limit"); }, 800);
+  }).observe(document.body, { childList: true, subtree: true, characterData: true });
+  document.addEventListener("click", function (e) {
+    var el = e.target && e.target.closest ? e.target.closest("button, div, span, li") : null;
+    var first = el && el.firstChild && el.firstChild.nodeType === 3 ? el.firstChild.nodeValue : "";
+    if (!/^\s*🔒/.test(first) || e.target.closest("#pro-section")) return;
+    if (pc) setTimeout(function () { show("limit"); }, 300); else goPro();
+  }, true);
+  var origAlert = window.alert;
+  window.alert = function (msg) {
+    var r = origAlert.apply(window, arguments);
+    if (/買い切り版/.test(String(msg))) setTimeout(function () { show("limit"); }, 300);
+    return r;
+  };
+})();
+</script>
+<!--UPSELL_JS_END-->
+</body>
+</html>
